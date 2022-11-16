@@ -53,3 +53,15 @@ sort()
 sort: method sorts all the nodes(branches) by their id's.
 
 BEAMLAK TADESSE || MHCDA
+
+insert method added to the datastructure
+
+insert()
+insert: method takes (id,position,node) argument in order to insert the wanted node
+at a specific position.
+
+-> if id is provided then its gona be appended as the child of that id node at the 
+needed place, and if id is not provided then its gona be placed at the next node
+of the data strucuture flow on the needed position.
+
+0 === first node of the structure

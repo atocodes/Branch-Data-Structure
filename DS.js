@@ -3,6 +3,7 @@ class Node{
         this.data = data
         this.next = null
         this.prev = null
+        this.id = null
     }
 }
 
@@ -18,7 +19,7 @@ class Branch{
         const all = this.searchMany({data:'*'})
         return all.length
     }
-    
+
     append({id,parent,data}){
         const node = new Node(data)
         const is_empty = this.is_empty
@@ -125,6 +126,68 @@ class Branch{
             count+=1
             current = current.next
         }
+    }
+
+    insert({id,position,node}){
+        if(id)var parent =this.search({id:id})
+
+        const new_node = new Node(node)
+
+        let pose = 0
+        let child 
+        
+        if(id && parent.child){
+            child = parent.child
+        }else if(id && !parent.child){
+            child = parent
+        }else if(!id && position){
+            child = this.head
+        }
+
+        let prev_child
+
+        while(child){
+            if(position === 0){
+                prev_child = child
+            }
+            pose += 1
+            if(position > 0 && pose === position){
+                prev_child = child
+            }
+            child = child.next
+        }
+        
+        let _id = prev_child.id.split('')   
+        _id[_id.length - 1] = `${pose}`
+        _id = _id.join('')
+        new_node.id = _id
+        
+        if(!id)new_node.id = `${+new_node.id + 1}`
+        
+        if(position > 0){
+
+            new_node.prev = prev_child
+            new_node.next = prev_child.next
+            prev_child.next.prev = new_node
+            prev_child.next = new_node
+        }else if(position === 0 || !parent.child){
+
+            let child_node
+            if(parent.child){
+                child_node = parent.child
+                child_node.prev = new_node
+
+                new_node.next = child_node
+                new_node.prev = parent
+
+                parent.child = new_node
+            }else{
+                new_node.prev = parent.prev
+                new_node.id = parent.id + '0'
+                parent.child = new_node
+            }
+        }
+       return
     }
 
     search({id,data,node}){
@@ -325,13 +388,13 @@ b.append({parent:'javascript',data:'nodejs'})
 b.append({parent:'javascript',data:'nodejs'})
 b.append({parent:'c',data:'nodejs'})
 b.append({parent:'c#',data:'nodejs'})
-
+b.append({data:'beamlak'})
 console.log('')
 const sm = b.searchMany({data:'nodejs'})
 console.log(sm)
 
-const rm = b.remove({id:'101'})
-console.log(rm)
+// const rm = b.remove({id:'101'})
+// console.log(rm)
 
 const dh = b.deleteHead
 console.log(dh)
@@ -345,6 +408,11 @@ console.log(size)
 console.log('')
 const s = b.sort()
 console.log(s)
+console.log('')
+
+b.insert({id:'10011',node:'iStudient',position:0})
+b.insert({position:1,node:'tadesse'})
+console.log(b.search({id:'10011'}))
 
 console.log('')
 console.log(b)
