@@ -168,7 +168,7 @@ class Branch{
 
             new_node.prev = prev_child
             new_node.next = prev_child.next
-            prev_child.next.prev = new_node
+            if(prev_child.next)prev_child.next.prev = new_node
             prev_child.next = new_node
         }else if(position === 0 || !parent.child){
 
@@ -410,7 +410,8 @@ const s = b.sort()
 console.log(s)
 console.log('')
 
-b.insert({id:'10011',node:'iStudient',position:0})
+b.insert({id:'10',node:'iStudient',position:2})
+console.error('hey')
 b.insert({position:1,node:'tadesse'})
 console.log(b.search({id:'10011'}))
 
