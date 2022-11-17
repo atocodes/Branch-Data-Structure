@@ -283,7 +283,7 @@ class Branch{
         }
     }
 
-    sort(){
+    sorted(){
         const datas = this.traversal({data:'*'})
         let sorted = []
 
@@ -307,6 +307,22 @@ class Branch{
         const node = this.search({id:id})
         if(!node || !id)return false
         return node.data = new_data
+    }
+
+    binarySearch({id,nodes}){
+        let arr = this.sorted().map(node => +node.id)
+        if(nodes)arr = nodes
+        let mid = Math.floor(arr.length / 2)
+        let res
+        if(arr[mid] === +id){
+            return arr[mid]
+        } 
+       if(arr[mid] < +id){
+            return this.binarySearch({id : id, nodes : arr.slice(mid,arr.length)})
+       }else if(arr[mid] > +id){
+            return this.binarySearch({id : id, nodes : arr.slice(0,mid)})
+       }
+       
     }
 }
 
@@ -425,3 +441,5 @@ b.eadit = {id:'103',new_data:'eadited'}
 
 console.log(b)
 
+const bs = b.binarySearch({id:'11010'})
+console.log(bs)
