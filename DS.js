@@ -411,7 +411,6 @@ console.log(s)
 console.log('')
 
 b.insert({id:'10',node:'iStudient',position:2})
-console.error('hey')
 b.insert({position:1,node:'tadesse'})
 console.log(b.search({id:'10011'}))
 
