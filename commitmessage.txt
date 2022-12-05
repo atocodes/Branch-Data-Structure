@@ -1,0 +1,26 @@
+loop_through method change and id for every node
+
+search()
+it used to be sub method called loop_through() in order to find 
+and return the parent node for the next child node but now i made a
+search algorythm to search and return the parent node so now its
+possible to create a child for the specific parent.
+
+ID 
+now every parent and childern node have a specific id.
+the main use abt the id is there a much possibility that there will 
+be same datas in the branch and in order to reduce the possibility of
+unwanted mis getting the parent node i have provided an id for 
+every nodes.
+
+CONCLUSION
+now so it is possible to search by id or by the name of the data.
+best recomanded is to search by ID.
+
+FINALLY
+i belive the data structure so far is working as expected to be 
+emplimented on the web app project i am currently working on called 
+BRANCH it has a couple of methods and configurations the needed to be
+done. so far its a big step
+
+BEAMLAK TADESSE || MHCDA

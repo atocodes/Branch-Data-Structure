@@ -14,12 +14,11 @@ class Branch{
         return this.head === null
     }
     
-    append({parent,data}){
+    append({id,parent,data}){
         const node = new Node(data)
         const is_empty = this.is_empty
         let count = 1
-        
-        console.log('Parent',parent,'Data',data)
+        if(id)console.log('ID:',id,'\n','Data:',data);else if(parent)console.log('Parent:',parent,'\n','Data:',data);
         
         if(is_empty){
             console.log(`%c Got First Head \n\t\t Node Branch => ${data} : SUCCESS ✔`,'color : blueviolet')
@@ -94,31 +93,16 @@ class Branch{
             }
         }
 
-        // const loop_child = ({data,node}) =>{
-        //     let n = node
-        //     while(n){
-        //         if(n.data === data){
-        //             return n
-        //         }else if(n.child){
-        //             count+=1
-        //             let c = loop_child({data : data,node : n.child})
-        //             if(c){
-        //                 return c
-        //             }
-        //         }
-        //         n = n.next
-        //     }
-        //     return false
-        // }
-
         while(current){
-            if(parent){
-                if(current.data === parent) return make_node({parent : current,new_node : node})
+            if(parent || id){
+                // ? Here if the user want to append child by id then all the searching will be done and send it to make_node() method
+                const searchingByID = this.search({id:id})
+                if(parent && current.data === parent) return make_node({parent : current,new_node : node})
+                if(id && searchingByID.id === id)return make_node({parent:searchingByID,new_node:node})
+
                 let c_child
-                if(current.child)c_child = current.child
-                
+                if(current.child)c_child = current.child;
                 if(c_child){
-                    // todo: THIS HAS TO BE **ID BASED** SEARCH IN ORDER TO CREATE A CHILD NODE FOR THE TARGETED NODE
                     const o = this.search({data : parent, node : c_child})
                     if(o){
                         current = o
@@ -169,11 +153,13 @@ b.append({data:'cs'})
 b.append({parent:'cs',data:'phd'})
 b.append({parent:'cs',data:'pro'})
 
+// ! APPENDING BY ID
 // ? CS -> PHD
-b.append({parent:'phd',data:'stud1'})
-b.append({parent:'phd',data:'stud2'})
-b.append({parent:'phd',data:'stud3'})
+b.append({id:'10',data:'stud1'})
+b.append({id:'10',data:'stud2'})
+b.append({id:'10',data:'stud3'})
 
+// ! APPENDING BY PARENT NAME
 // ? CS -> PHD -> STUD1
 b.append({parent:'stud1',data:'name1'})
 b.append({parent:'stud1',data:'paper1'})
@@ -182,7 +168,7 @@ b.append({parent:'stud1',data:'paper1'})
 b.append({parent:'paper1',data:'paper11'})
 
 // ? CS -> PHD -> STUD1 -> PAPER1 -> title
-// b.append({parent:'paper11',data:'title'})
+b.append({id:'1001',data:'title'})
 
 // ? CS -> PHD -> STUD1 -> PAPER1 -> author
 b.append({parent:'paper11',data:'author'})
@@ -236,17 +222,16 @@ b.append({parent:'pro2',data:'paper02'})
 
 
 // !NEXT
-// b.append({data:'c'})
-// b.append({parent:'c',data:'c++'})
-// b.append({parent:'c',data:'c#'})
-// b.append({parent:'c',data:'java'})
-// b.append({parent:'c',data:'python'})
-// b.append({parent:'c',data:'dart'})
-// b.append({parent:'java',data:'javascript'})
-// b.append({parent:'javascript',data:'nodejs'})
+b.append({data:'c'})
+b.append({parent:'c',data:'c++'})
+b.append({parent:'c',data:'c#'})
+b.append({parent:'c',data:'java'})
+b.append({parent:'c',data:'python'})
+b.append({parent:'c',data:'dart'})
+b.append({parent:'java',data:'javascript'})
+b.append({parent:'javascript',data:'nodejs'})
 console.log('')
 
 console.log(b)
-const id_search = b.search({id:'102100'})
-console.log(id_search)
+
 
