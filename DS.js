@@ -20,24 +20,60 @@ class Branch{
         const is_empty = this.is_empty
         console.log('Parent',parent,'Data',data)
         if(is_empty){
-            console.log(`%c Got First Head \n\t\t Node Branch => ${data}`,'color : blueviolet')
+            console.log(`%c Got First Head \n\t\t Node Branch => ${data} : SUCCESS ✔`,'color : blueviolet')
             return this.head = node}
         let current = this.head
 
+        const path_viewer = (branch) =>{
+            let path = branch
+            let arr = []
+
+            while(path){
+                arr.push(path.data)
+                path = path.prev
+            }
+            arr.reverse()
+            arr = arr.map((node,index) =>{
+                if(node === branch.data){
+                    return `=> ${node.toUpperCase()}`
+                }
+                if(index > 0){
+                    return `-> ${node.toUpperCase()}`
+                }
+                return node.toUpperCase()
+            })
+            arr = arr.join('')
+            return arr
+        }
+
         const make_node = ({parent,new_node}) =>{
+            
             if(parent.child){
-                console.log(`%c PARENT NODE => ${parent.data}\n\tGot Additional New \n\t\t CHILD NODE => ${data}`,'color : blue')
                 const s = this.search({node : parent.child})
                 new_node.prev = s
+
+                // * CONSOLE VIEW
+                console.log(`%c PARENT NODE => ${parent.data}\n\tGot Additional New \n\t\t CHILD NODE => ${data} : SUCCESS ✔`,'color : blue')
+                const p = path_viewer(new_node)
+                console.log(`%cPATH: ${p}`,'color:gray')
                 console.log(parent)
+                // *===
+
                 return s.next = new_node
             }else{
-                console.log(`%c PARENT NODE => ${parent.data}\n\t Got First \n\t\t CHILD NODE => ${data}`,'color : green')
                 new_node.prev = parent
+
+                // * CONSOLE VIEW
+                console.log(`%c PARENT NODE => ${parent.data}\n\t Got First \n\t\t CHILD NODE => ${data} : SUCCESS ✔`,'color : green')
+                const p = path_viewer(new_node)
+                console.log(`%cPATH: ${p}`,'color:gray')
                 console.log(parent)
+                // *===
+
                 return parent.child = new_node
             }
         }
+
         const loop_child = ({data,node}) =>{
             let n = node
             while(n){
@@ -71,7 +107,14 @@ class Branch{
             }else{
                 if(!current.next){
                     node.prev = current
-                    console.log(`%c Branch ${node.prev.data}\n\t Got Next \n\t\t Branch => ${data}`,'color : brown')
+
+                    // * CONSOLE VIEW
+                    console.log(`%c Branch ${node.prev.data}\n\t Got Next \n\t\t Branch => ${data} : SUCCESS ✔`,'color : brown')
+                    const p = path_viewer(node)
+                    console.log(`%cPATH: ${p}`,'color:gray')
+                    console.log(current)
+                    // *===
+
                     return current.next = node
                 }
             }
@@ -96,142 +139,76 @@ class Branch{
 }
 
 const b = new Branch()
-b.append({
-    data:0
-})
+b.append({data:'root'})
+b.append({data:'cs'})
 
-b.append({
-    data:1
-})
+// ? CS
+b.append({parent:'cs',data:'phd'})
+b.append({parent:'cs',data:'pro'})
 
-b.append({
-    parent : 1,
-    data : 2
-})
+// ? CS -> PHD
+b.append({parent:'phd',data:'stud1'})
+b.append({parent:'phd',data:'stud2'})
+b.append({parent:'phd',data:'stud3'})
 
-b.append({
-    parent : 1,
-    data : 3
-})
+// ? CS -> PHD -> STUD1
+b.append({parent:'stud1',data:'name1'})
+b.append({parent:'stud1',data:'paper1'})
 
-b.append({
-    parent : 2,
-    data : 4
-})
+// ? CS -> PHD -> STUD1 -> PAPER1
+b.append({parent:'paper1',data:'paper11'})
 
-b.append({
-    parent : 2,
-    data : 5
-})
+// ? CS -> PHD -> STUD1 -> PAPER1 -> title
+b.append({parent:'paper11',data:'title'})
 
-b.append({
-    parent : 2,
-    data : 6
-})
-// // // console.warn('appending sub child')
+// ? CS -> PHD -> STUD1 -> PAPER1 -> author
+b.append({parent:'paper11',data:'author'})
 
-b.append({
-    parent : 3,
-    data : 7
-})
+// ? CS -> PHD -> STUD2 -> NAME2
+b.append({parent:'stud2',data:'name2'})
 
-b.append({
-    parent : 3,
-    data : 8
-})
+// ? CS -> PHD -> STUD3 -> NAME3
+b.append({parent:'stud3',data:'name3'})
 
-// // // console.warn('appending sub child')
+// ? CS -> PHD -> STUD3 -> PAPER2
+b.append({parent:'stud3',data:'paper2'})
 
-b.append({
-    parent : 4,
-    data: 9
-})
+// ? CS -> PHD -> STUD3 -> PAPER2 -> PAPER3
+b.append({parent:'paper2',data:'paper3'})
 
-b.append({
-    parent : 4,
-    data: 10
-})
+// ? CS -> PHD -> STUD3 -> PAPER2 -> PAPER3 -> PAPER4
+b.append({parent:'paper3',data:'paper4'})
 
-// console.warn('appending sub child')
+// ? CS -> PHD -> STUD3 -> PAPER2 -> PAPER3 -> PAPER4 -> Title
+b.append({parent:'paper4',data:'title1'})
+
+// ? CS -> PHD -> STUD3 -> PAPER2 -> PAPER3 -> PAPER4 -> Title
+b.append({parent:'paper4',data:'author'})
 
 
-b.append({
-    parent : 5,
-    data : 11
-})
 
-b.append({
-    parent : 6,
-    data : 12
-})
+// ? CS -> PRO -> PRO1
+b.append({parent:'pro',data:'pro1'})
 
-b.append({
-    parent : 6,
-    data : 13
-})
-// console.error('After this line Needs a fix and it HAve to do in block code startig from line 46')
-// // console.warn('appending sub child')
+// ? CS -> PRO -> PRO2
+b.append({parent:'pro',data:'pro2'})
 
-b.append({
-    parent : 7,
-    data : 14
-})
+// ? CS -> PRO -> PRO1 -> NAME01
+b.append({parent:'pro1',data:'name01'})
 
-b.append({
-    parent : 7,
-    data : 15
-})
+// ? CS -> PRO -> PRO1 -> PAPER01
+b.append({parent:'pro1',data:'paper01'})
 
-b.append({
-    parent : 8,
-    data : 16
-})
+// ? CS -> PRO -> PRO1 -> PAPER01 -> PAPER002
+b.append({parent:'paper01',data:'paper002'})
 
-b.append({
-    parent : 8,
-    data : 17
-})
+// ? CS -> PRO -> PRO1 -> PAPER01 -> PAPER002 -> TITLE01
+b.append({parent:'paper002',data:'title01'})
 
-b.append({
-    parent : 10,
-    data : 18
-})
+// ? CS -> PRO -> PRO2 -> NAME02
+b.append({parent:'pro2',data:'name02'})
 
-b.append({
-    parent : 13,
-    data : 19
-})
-// // console.warn('appending sub child')
+// ? CS -> PRO -> PRO2 -> PAPER02
+b.append({parent:'pro2',data:'paper02'})
 
-b.append({
-    parent : 15,
-    data : 20
-})
-
-b.append({
-    parent : 18,
-    data : 21
-})
-
-b.append({
-    parent : 18,
-    data : 22
-})
-
-b.append({
-    parent : 19,
-    data : 23
-})
-
-b.append({
-    parent : 19,
-    data : 24
-})
-
-// console.warn('appending sub child')
-
-b.append({
-    parent : 20,
-    data : 25
-})
 console.log(b)
