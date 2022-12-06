@@ -342,12 +342,6 @@ console.log(isP)
 const size = b.size
 console.log(size)
 
-const insert = b.insert({
-    id:'102100',
-    position:2,
-    data:'insertion'
-})
-
 console.log('')
 const s = b.sort()
 console.log(s)
