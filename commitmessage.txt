@@ -23,4 +23,33 @@ emplimented on the web app project i am currently working on called
 BRANCH it has a couple of methods and configurations the needed to be
 done. so far its a big step
 
+BEAMLAK TADESSE || MHCDA-
+
+
+
+searchMany, remove, size, delete_head and sort new methods and id data type changes on parent nodes(branches).
+
+searchMany()
+searchMany: method is now available to search duplicated datas in the branch 
+and returns an array of mathcing datas.
+One of the features about searchMany() method is that if we want to get all 
+branch data is now possible by giving the data "*" which by means is all so
+the function will return an array of all branches.
+
+remove()
+remove: method takes an id as argument in order to remove the expected data in the branch
+id is chosen because of not to create unwanted results.
+***it removes with its sub branches (child_nodes)***
+so be alert about that.
+
+size()
+size: method returns an intiger of the size in the branch data counting all the
+datas in the branch.
+
+delete_head
+delete_head: method will remove the head of the data structure.
+
+sort()
+sort: method sorts all the nodes(branches) by their id's.
+
 BEAMLAK TADESSE || MHCDA

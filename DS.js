@@ -13,6 +13,11 @@ class Branch{
     get is_empty(){
         return this.head === null
     }
+
+    get size(){
+        const all = this.searchMany({data:'*'})
+        return all.length
+    }
     
     append({id,parent,data}){
         const node = new Node(data)
@@ -22,7 +27,7 @@ class Branch{
         
         if(is_empty){
             console.log(`%c Got First Head \n\t\t Node Branch => ${data} : SUCCESS ✔`,'color : blueviolet')
-            node.id = 0
+            node.id = '0'
             return this.head = node
         }
 
@@ -72,7 +77,7 @@ class Branch{
                 let s = parent.child
                 let child_id
                 const nums = s.id.replace(/-/,' ').split('').map(e => parseInt(e))
-                child_id = nums[nums.length-1]
+                child_id = +nums[nums.length-1]
 
                 while(s){
                     if(s.next == null){
@@ -113,7 +118,7 @@ class Branch{
                 if(!current.next){
                     node.prev = current
                     console_view({parent:node.prev,node:node,child:false})//* CONSOLE VIEW
-                    node.id = count
+                    node.id = `${count}`
                     return current.next = node
                 }
             }
@@ -123,26 +128,114 @@ class Branch{
     }
 
     search({id,data,node}){
+        // ? O(n) =>The time taking depends on the size of the data
+        // ? Linear Search algorythm.
+
+        // * If searching method is by data.
+        // * and if there is a multiple same data names 
+        // * it will return the first data that matches. 
         let n = this.head
-        const datas = []
         if(node)n=node
         if(data && id)return 'Either Data Or ID not both searching available for now'
-        while(n){
-            if(id && n.id === id)return n
-            if(data && n.data === data){
-                datas.push(n)
-                return n
-            }
 
+        while(n){
+
+            if(id && n.id === id)return n
+            if(data && n.data === data)return n
+            
             if(n.child){
+
                 let s2 = this.search({data:data,node:n.child})
                 if(id)s2 = this.search({id:id,node:n.child})
-                if(s2)return s2
+                if(s2)return s2 
             }
+
             n = n.next
         }
         return false
     }
+
+    searchMany({data,node}){
+        const searchResult = []
+
+        let current = this.head
+        if(node)current = node
+        while(current){
+            if(current.data === data){
+                searchResult.push(current)
+            }else if(data === '*'){
+                searchResult.push(current)
+            }
+
+            if(current.child){
+                const s2 = this.searchMany({data:data,node:current.child})
+                searchResult.push(...s2)
+            }
+
+            current= current.next
+        }
+
+        return searchResult
+    }
+
+    remove({id}){
+        // !REMOVING BY ID
+        let node = this.search({id:id})
+        if(node){
+            let prev = node.prev
+            const nxt = node.next
+
+            prev = this.search({id:prev.id})
+            if(prev.next.data === node.data){
+                console.log(node)
+                console.log(`%cRemoving Next\n DATA: ${node.data} \n\tID: #${node.id} = SUCCESS ✔`,'color:orange')
+                return prev.next = node.next
+            }else if(prev.child.data === node.data){
+                console.log(`%cRemoving Child\n DATA: ${node.data} \n\tID: #${node.id} = SUCCESS ✔`,'color:orange')
+                return prev.child = nxt
+            }
+        }
+
+        return '%cSOMETHING IS WRONG','color:red'
+    }
+
+    get deleteHead(){
+        console.log('%cDeleting HEAD : SUCCESS ✔','color : orange')
+        return this.head = this.head.next
+    }
+
+    isPresent({data}){
+        const search = this.searchMany({data:data})
+        if(search){
+            return {
+                status : true,
+                length : search.length
+            }
+        }else{
+            return false
+        }
+    }
+
+    sort(){
+        const datas = this.searchMany({data:'*'})
+        let sorted = []
+
+        for(let data of datas){
+            sorted.push(+data.id)
+        }
+        sorted.sort((a,b)=>{
+            if(a > b)return 1
+            if(a < b)return -1
+            return 0
+        })
+        sorted = sorted.map(id =>{
+            let _id = `${id}`
+            const search_by_id = this.search({id:_id})
+            return search_by_id
+        })
+        return sorted
+    }
+    
 }
 
 const b = new Branch()
@@ -163,7 +256,6 @@ b.append({id:'10',data:'stud3'})
 // ? CS -> PHD -> STUD1
 b.append({parent:'stud1',data:'name1'})
 b.append({parent:'stud1',data:'paper1'})
-
 // ? CS -> PHD -> STUD1 -> PAPER1
 b.append({parent:'paper1',data:'paper11'})
 
@@ -230,8 +322,35 @@ b.append({parent:'c',data:'python'})
 b.append({parent:'c',data:'dart'})
 b.append({parent:'java',data:'javascript'})
 b.append({parent:'javascript',data:'nodejs'})
+b.append({parent:'javascript',data:'nodejs'})
+b.append({parent:'c',data:'nodejs'})
+b.append({parent:'c#',data:'nodejs'})
+
 console.log('')
+const sm = b.searchMany({data:'nodejs'})
+console.log(sm)
 
+const rm = b.remove({id:'101'})
+console.log(rm)
+
+const dh = b.deleteHead
+console.log(dh)
+
+const isP = b.isPresent({data:'javascript'})
+console.log(isP)
+
+const size = b.size
+console.log(size)
+
+const insert = b.insert({
+    id:'102100',
+    position:2,
+    data:'insertion'
+})
+
+console.log('')
+const s = b.sort()
+console.log(s)
+
+console.log('')
 console.log(b)
-
-
