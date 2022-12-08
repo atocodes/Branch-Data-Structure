@@ -8,15 +8,17 @@ class Node{
 }
 
 class Branch{
+
     constructor(){
         this.head = null
     }
+    
     get is_empty(){
         return this.head === null
     }
 
     get size(){
-        const all = this.searchMany({data:'*'})
+        const all = this.traversal({data:'*'})
         return all.length
     }
 
@@ -217,8 +219,10 @@ class Branch{
         }
         return false
     }
+    
+    // todo: Note TRAVERSAL means to print every nodes in the list.
 
-    searchMany({data,node}){
+    traversal({data,node}){
         const searchResult = []
 
         let current = this.head
@@ -231,7 +235,7 @@ class Branch{
             }
 
             if(current.child){
-                const s2 = this.searchMany({data:data,node:current.child})
+                const s2 = this.traversal({data:data,node:current.child})
                 searchResult.push(...s2)
             }
 
@@ -268,7 +272,7 @@ class Branch{
     }
 
     isPresent({data}){
-        const search = this.searchMany({data:data})
+        const search = this.traversal({data:data})
         if(search){
             return {
                 status : true,
@@ -280,7 +284,7 @@ class Branch{
     }
 
     sort(){
-        const datas = this.searchMany({data:'*'})
+        const datas = this.traversal({data:'*'})
         let sorted = []
 
         for(let data of datas){
@@ -299,6 +303,11 @@ class Branch{
         return sorted
     }
     
+    set eadit({id,new_data}){
+        const node = this.search({id:id})
+        if(!node || !id)return false
+        return node.data = new_data
+    }
 }
 
 const b = new Branch()
@@ -390,7 +399,7 @@ b.append({parent:'c',data:'nodejs'})
 b.append({parent:'c#',data:'nodejs'})
 b.append({data:'beamlak'})
 console.log('')
-const sm = b.searchMany({data:'nodejs'})
+const sm = b.traversal({data:'nodejs'})
 console.log(sm)
 
 // const rm = b.remove({id:'101'})
@@ -406,13 +415,13 @@ const size = b.size
 console.log(size)
 
 console.log('')
-const s = b.sort()
-console.log(s)
-console.log('')
 
 b.insert({id:'10',node:'iStudient',position:2})
 b.insert({position:1,node:'tadesse'})
 console.log(b.search({id:'10011'}))
 
 console.log('')
+b.eadit = {id:'103',new_data:'eadited'}
+
 console.log(b)
+
